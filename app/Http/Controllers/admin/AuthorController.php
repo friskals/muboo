@@ -19,4 +19,10 @@ class AuthorController extends Controller
         Author::create($request->validated());
         return true;
     }
+
+    public function show($id){
+        $author = Author::findOrFail($id);
+
+        return $author;
+    }
 }

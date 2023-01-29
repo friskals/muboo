@@ -25,4 +25,14 @@ class AuthorTest extends TestCase
         //TODO
         //delete inserted author to takeout dummy data
     }
+
+    public function test_show_author_success(){
+        $author = Author::factory()->create();
+
+        $response = $this->get(self::ENDPOINT .'/'. $author->id);
+
+        $author->delete();
+        
+        $response->assertStatus(200);
+    }
 }
