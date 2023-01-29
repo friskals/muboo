@@ -25,4 +25,12 @@ class AuthorController extends Controller
 
         return $author;
     }
+
+    public function update(StoreRequest $request, $id){
+        $author = Author::findOrFail($id);
+
+        $author->update($request->validated());
+
+        return true;
+    }
 }
