@@ -33,4 +33,12 @@ class AuthorController extends Controller
 
         return true;
     }
+
+    public function destroy($id){
+        $author = Author::findOrFail($id);
+
+        $author->delete();
+
+        return true;
+    }
 }
