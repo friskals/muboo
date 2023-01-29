@@ -53,5 +53,16 @@ class AuthorTest extends TestCase
         
         $author->delete();
     }
+
+    public function test_delete_author_true(){
+        $author = Author::factory()->create();
+
+        $response = $this->delete(self::ENDPOINT .'/'. $author->id);
+
+        $response->assertStatus(200);
+
+
+        $this->assertDatabaseMissing('categories', ['id' => $author->id, 'name' => $author->name]);
+    }
    
 }
