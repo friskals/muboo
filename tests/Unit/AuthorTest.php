@@ -3,11 +3,13 @@
 namespace Tests\Unit;
 
 use App\Models\Author;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-
 
 class AuthorTest extends TestCase
 {
+    use RefreshDatabase;
+    
     private const ENDPOINT = '/admin/authors';
 
     public function test_list_author_success()
