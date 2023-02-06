@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Book\StoreRequest;
+use App\Http\Requests\Admin\Book\UpdateRequest;
 use App\Models\Book;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -24,6 +23,18 @@ class BookController extends Controller
                 'public'
             )
         ]);
+        
+        return "ok";
+    }
+
+    public function update(UpdateRequest $request, $id){
+        $book = Book::findOrFail($id);
+        
+        $updated = $request->all();
+
+        unset($updated['image']);
+
+        $book->update($updated);
         
         return "ok";
     }
