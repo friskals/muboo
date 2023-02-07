@@ -20,6 +20,7 @@ class BookFactory extends Factory
     public function definition()
     {
         $author = Author::factory()->create();
+        
         $image = UploadedFile::fake()->image("{$this->faker->word()}.png", 10, 10);
 
         $image->storeAs('images', $image->name, 'public');

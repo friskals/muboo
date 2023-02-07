@@ -65,4 +65,27 @@ class BookTest extends TestCase
 
         Storage::disk('public')->assertExists($book->image);
     }
+
+    public function test_update_book_success_with_image()
+    {
+        $book = Book::factory()->create();
+
+        Storage::fake('images');
+
+        $image = UploadedFile::fake()->image('cover.png', 10, 10);
+
+        $request = ['image' => $image ];
+
+        $response = $this->put(self::ENDPOINT . "/{$book->id}", $request);
+
+        $response->assertStatus(200);
+
+        Storage::disk('public')->assertMissing($book->image);
+
+        $book->refresh();
+ 
+        $this->assertEquals($book->image, "images/$image->name");
+
+        Storage::disk('public')->assertExists($book->image);
+    }
 }
