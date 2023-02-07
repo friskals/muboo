@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class UpdateRequest extends FormRequest
 {
@@ -27,7 +28,9 @@ class UpdateRequest extends FormRequest
             'title' => 'string',
             'author_id' => 'integer',
             'author_name' => 'string',
-            'is_published' => 'integer'
+            'is_published' => 'integer',
+            'image' => [File::types(['jpeg', 'jpg','png',''])
+                ->max(2 * 1024)]
         ];
     }
 }

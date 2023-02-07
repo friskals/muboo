@@ -50,4 +50,20 @@ class BookController extends Controller
 
         return "ok";
     }
+
+    public function destroy($id){
+        $book = Book::findOrFail($id);
+        
+        Storage::disk('public')->delete($book->image);
+        
+        $book->delete();
+        
+        return "ok";
+    }
+
+    public function show($id){
+        $book = Book::findOrFail($id);
+       
+        return $book;
+    }
 }
