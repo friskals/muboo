@@ -39,6 +39,8 @@ class BookTest extends TestCase
         Storage::disk('public')->assertExists('images/cover.png');
 
         $this->assertDatabaseHas('books', ['title' => $request['title'], 'author_id' => $request['author_id']]);
+
+        Storage::disk('public')->delete("images/{$image->name}");
     }
 
     public function test_update_book_success_without_image()
@@ -64,6 +66,8 @@ class BookTest extends TestCase
         $this->assertEquals($new_author->name, $book->author_name);
 
         Storage::disk('public')->assertExists($book->image);
+
+        Storage::disk('public')->delete($book->image);
     }
 
     public function test_update_book_success_with_image()
@@ -74,7 +78,7 @@ class BookTest extends TestCase
 
         $image = UploadedFile::fake()->image('cover.png', 10, 10);
 
-        $request = ['image' => $image ];
+        $request = ['image' => $image];
 
         $response = $this->put(self::ENDPOINT . "/{$book->id}", $request);
 
@@ -83,9 +87,34 @@ class BookTest extends TestCase
         Storage::disk('public')->assertMissing($book->image);
 
         $book->refresh();
- 
+
         $this->assertEquals($book->image, "images/$image->name");
 
         Storage::disk('public')->assertExists($book->image);
+
+        Storage::disk('public')->delete($book->image);
+    }
+
+    public function test_detail_book_success()
+    {
+        $book = Book::factory()->create();
+
+        $response = $this->get(self::ENDPOINT . "/{$book->id}");
+
+        $response->assertStatus(200);
+
+        Storage::disk('public')->delete($book->image);
+
+    }
+
+    public function test_destroy_book_success()
+    {
+        $book = Book::factory()->create();
+
+        $response = $this->delete(self::ENDPOINT . "/{$book->id}");
+
+        $response->assertStatus(200);
+
+        Storage::disk('public')->assertMissing($book->image);
     }
 }
