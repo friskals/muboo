@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,3 +80,7 @@ Route::get('/form/layouts-horizontal', $controller_path . '\form_layouts\Horizon
 
 // tables
 Route::get('/tables/basic', $controller_path . '\tables\Basic@index')->name('tables-basic');
+
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
+
+Route::get('/logout', [LogoutController::class, 'perform'])->name('logout');

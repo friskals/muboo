@@ -27,10 +27,11 @@
           <h4 class="mb-2">Adventure starts here 🚀</h4>
           <p class="mb-4">Make your app management easy and fun!</p>
 
-          <form id="formAuthentication" class="mb-3" action="{{url('/')}}" method="GET">
+          <form id="formAuthentication" class="mb-3" action="{{url('/register')}}" method="POST">
+            @csrf
             <div class="mb-3">
               <label for="username" class="form-label">Username</label>
-              <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" autofocus>
+              <input type="text" class="form-control" id="username" name="name" placeholder="Enter your username" autofocus>
             </div>
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
