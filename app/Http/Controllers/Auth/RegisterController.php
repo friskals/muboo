@@ -9,13 +9,14 @@ use App\Models\User;
 class RegisterController extends Controller
 {
     public function register(RegisterRequest $request)
-    { 
+    {
+
         $request = $request->validated();
 
         $user = User::create($request);
-        
+
         auth()->login($user);
-        
-        return "aman";
+
+        return redirect()->route('dashboard-analytics');
     }
 }
