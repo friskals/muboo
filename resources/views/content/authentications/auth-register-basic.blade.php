@@ -44,6 +44,13 @@
                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
               </div>
             </div>
+            @if($errors->any())
+              <div class="mb-3">
+                @foreach($errors->all() as $error)
+                <p>{{$error}}</p>
+                @endforeach
+               </div>
+            @endif
 
             <div class="mb-3">
               <div class="form-check">
