@@ -24,7 +24,8 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
+            'status' => 'required|in:Inactive,Active'
         ];
     }
 }
