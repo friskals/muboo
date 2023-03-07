@@ -18,9 +18,12 @@ class CategoryTest extends TestCase
      */
     public function test_create_category_success()
     {
-        $response = $this->post('/admin/categories', ['name' => 'Science']);
+        $this->signIn();
+        
+        $this->get('/admin/categories/create')->assertStatus(200);
 
-        $response->assertStatus(200);
+        $this->followingRedirects()->post('/admin/categories', ['name' => 'Science','status'=>'Inactive'])
+        ->assertSee('Science');
     }
 
     public function test_show_category_success()

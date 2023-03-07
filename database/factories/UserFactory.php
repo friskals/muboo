@@ -23,6 +23,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => '$2y$10$C7NSmXgf90IQxdm.LtKKDuOCH3nmU6xrILijfGW.7xzIw96tWKg7K', //password
             'remember_token' => Str::random(10),
+            'role_id' => 1
         ];
     }
 
