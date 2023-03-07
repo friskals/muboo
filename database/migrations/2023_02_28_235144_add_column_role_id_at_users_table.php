@@ -16,7 +16,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table($this->table, function($table) {
-            $table->integer('role_id');
+            $table->integer('role_id')->after('remember_token')->nullable();
         });
     }
 

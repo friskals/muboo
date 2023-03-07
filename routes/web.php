@@ -89,4 +89,4 @@ Route::post('/logout', [LogoutController::class, 'perform'])->name('logout');
 
 Route::post('/login',[LoginController   ::class,'login'])->name('login');
 
-Route::get('/unauthorized', [GeneralPageController::class, ['returnPage401']])->name('unauthorized');
+Route::get('/unauthorized', [GeneralPageController::class, 'returnPage401'])->name('unauthorized');
