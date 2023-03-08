@@ -28,9 +28,7 @@
                     <td>@if($category->status == 'Inactive')
                          <span class="badge bg-label-primary me-1">{{$category->status}}</span>
                         @else
- 
-                        <span class="badge bg-label-completed me-1">{{$category->status}}</span>
-
+                        <span class="badge bg-label-success me-1">{{$category->status}}</span>
                         @endif
                     </td>
                     <td>{{$category->created_at}}</td>
@@ -39,7 +37,7 @@
                         <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                <a class="dropdown-item" href="{{route('categories.edit', $category->id)}}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
                                 <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
                             </div>
                         </div>

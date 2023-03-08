@@ -4,8 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\category\StoreRequest;
+use App\Http\Requests\Admin\Category\UpdateRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 
@@ -41,13 +41,19 @@ class CategoryController extends Controller
         return $category;
     }
 
-    public function update($id, Request $request)
+
+    public function edit(Category $category)
+    {
+        return view('admin.category.edit', ['category' => $category]);
+    }
+
+    public function update($id, UpdateRequest $request)
     {
         $category = Category::findOrFail($id);
 
         $category->update(['name' => $request->name]);
 
-        return "ok";
+        return redirect()->route('categories.index');
     }
 
     public function destroy($id)
