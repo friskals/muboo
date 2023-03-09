@@ -8,5 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','slug','status'];
+    
+    protected $fillable = [
+        'name',
+        'slug',
+        'status'
+    ];
+
+    public function isActive()
+    {
+        return $this->name == 'Active';
+    }
 }

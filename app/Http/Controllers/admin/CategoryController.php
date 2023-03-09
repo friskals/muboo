@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\category\StoreRequest;
 use App\Http\Requests\Admin\Category\UpdateRequest;
+use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Support\Str;
 
@@ -51,7 +52,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        $category->update(['name' => $request->name]);
+        $category->update($request->validated());
 
         return redirect()->route('categories.index');
     }
@@ -59,7 +60,19 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
+
+        if ($category->isActive()) {
+            return back()->withErrors("Active category can't be deleted");
+        }
+
+        $usedInBook = Book::where('category_id', $id)->count();
+
+        if ($usedInBook) {
+            return back()->withErrors('Category is being used in book');
+        }
+
         $category->delete();
-        return "ok";
+
+        return redirect()->route('categories.index');
     }
 }
