@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Book\StoreRequest;
 use App\Http\Requests\Admin\Book\UpdateRequest;
+use App\Models\Author;
 use App\Models\Book;
+use App\Models\BookAuthor;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
@@ -14,16 +16,26 @@ class BookController extends Controller
     {
         $image = $request->file('image');
 
-        Book::create([
+        $author = Author::findOrfail($request->author_id);
+
+        $book = Book::create([
             'title' => $request->title,
-            'author_id' => $request->author_id,
-            'author_name' => $request->author_name,
             'is_published' => $request->is_published,
             'image' => $image->storeAs(
                 'images',
                 $image->getClientOriginalName(),
                 'public'
-            )
+            ),
+            'released_at' => $request->released_at
+        ]);
+
+        BookAuthor::create([
+            'book_id' => $book->id,
+            'book_title' => $book->title,
+            'author_id' => $author->id,
+            'author_name' => $author->name,
+            'is_published' => $book->is_published,
+            'image' => $book->image
         ]);
 
         return "ok";
@@ -51,19 +63,21 @@ class BookController extends Controller
         return "ok";
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $book = Book::findOrFail($id);
-        
+
         Storage::disk('public')->delete($book->image);
-        
+
         $book->delete();
-        
+
         return "ok";
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $book = Book::findOrFail($id);
-       
+
         return $book;
     }
 }

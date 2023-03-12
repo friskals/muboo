@@ -28,9 +28,9 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required|string|min:5',
             'author_id' =>'required|integer',//butuhh check author_id ada di db/enggak
-            'author_name' => 'required',
             'image'=>['required'],
-            'is_published' =>'required|in:0,1'
+            'is_published' =>'required|in:0,1',
+            'released_at' => 'required|date'
         ];
     }
 }
