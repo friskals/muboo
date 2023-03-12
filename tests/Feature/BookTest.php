@@ -17,6 +17,7 @@ class BookTest extends TestCase
 
     public function test_store_book_success()
     {
+        $this->signIn();
 
         $author =  Author::factory()->create();
 
@@ -27,9 +28,9 @@ class BookTest extends TestCase
         $request = [
             'title' => 'book title',
             'author_id' => $author->id,
-            'author_name' => $author->name,
             'image' => $image,
-            'is_published' => 1
+            'is_published' => 1,
+            'released_at' => '2023-03-12'
         ];
 
         $response = $this->post(SELF::ENDPOINT, $request);
@@ -38,7 +39,9 @@ class BookTest extends TestCase
 
         Storage::disk('public')->assertExists('images/cover.png');
 
-        $this->assertDatabaseHas('books', ['title' => $request['title'], 'author_id' => $request['author_id']]);
+        $this->assertDatabaseHas('books', ['title' => $request['title']]);
+
+        $this->assertDatabaseHas('book_author', ['book_title' => $request['title'], 'author_id' => $request['author_id']]);
 
         Storage::disk('public')->delete("images/{$image->name}");
     }
