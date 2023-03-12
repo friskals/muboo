@@ -43,6 +43,31 @@
       "menuHeader": "Pages"
     },
     {
+      "name": "Book Setting",
+      "icon": "menu-icon tf-icons bx bx-lock-open-alt",
+      "slug": "auth",
+      "submenu": [
+        {
+          "url": "/admin/authors",
+          "name": "Author",
+          "slug": "author",
+          "target": "_blank"
+        },
+        {
+          "url": "/admin/categories",
+          "name": "Category",
+          "slug": "category",
+          "target": "_blank"
+        },
+        {
+          "url": "/admin/categories",
+          "name": "Book",
+          "slug": "auth-forgot-password-basic",
+          "target": "_blank"
+        }
+      ]
+    },
+    {
       "name": "Account Settings",
       "icon": "menu-icon tf-icons bx bx bx-dock-top",
       "slug": "pages-account-settings",
