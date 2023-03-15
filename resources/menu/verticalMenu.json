@@ -60,7 +60,7 @@
           "target": "_blank"
         },
         {
-          "url": "/admin/categories",
+          "url": "/admin/books",
           "name": "Book",
           "slug": "auth-forgot-password-basic",
           "target": "_blank"

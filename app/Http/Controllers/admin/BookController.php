@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
+    public function index()
+    {
+        return view('admin.book.index')->with('books', collect([]));
+    }
+
     public function store(StoreRequest $request)
     {
         $image = $request->file('image');
