@@ -107,7 +107,6 @@ class BookTest extends TestCase
         $response->assertStatus(200);
 
         Storage::disk('public')->delete($book->image);
-
     }
 
     public function test_destroy_book_success()
@@ -119,5 +118,11 @@ class BookTest extends TestCase
         $response->assertStatus(200);
 
         Storage::disk('public')->assertMissing($book->image);
+    }
+
+    public function test_filter_book_success()
+    {
+        $this->signIn();
+        $this->get(self::ENDPOINT )->assertStatus(200);
     }
 }
