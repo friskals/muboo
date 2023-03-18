@@ -6,7 +6,9 @@
 <h4 class="fw-bold py-3 mb-4">
     <span class="text-muted fw-light">Category
 </h4>
-
+<div class="mb-4">
+    <button type="button" onclick="location.href='/admin/categories/create'" class="btn btn-success">Add</button>
+</div>
 <div class="card">
     <div class="table-responsive text-nowrap">
         <table class="table table-hover">

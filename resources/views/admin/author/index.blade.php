@@ -12,7 +12,7 @@
 </h4>
 
 <div class="mb-4">
-    <button type="button" id="addAuthor" class="btn btn-success">Add</button>
+    <button type="button" onclick="location.href='/admin/authors/create '" class="btn btn-success">Add</button>
 </div>
 <div class="card">
     <div class="table-responsive text-nowrap">
