@@ -19,6 +19,8 @@ class BookTest extends TestCase
     {
         $this->signIn();
 
+        $this->get(self::ENDPOINT . "/create")->assertStatus(200);
+
         $author =  Author::factory()->create();
 
         Storage::fake('images');
@@ -123,6 +125,22 @@ class BookTest extends TestCase
     public function test_filter_book_success()
     {
         $this->signIn();
-        $this->get(self::ENDPOINT )->assertStatus(200);
+
+        $this->get(self::ENDPOINT)->assertStatus(200);
+
+        $book = Book::factory()->create();
+
+        $filter = [
+            'id' => 1,
+            'title' => $book->title
+        ];
+
+        $arrayKeys = array_keys($filter);
+
+        for ($i = 0; $i < count($arrayKeys); $i++) {
+            $query = $filter[$arrayKeys[$i]];
+            $this->followingRedirects()->post(self::ENDPOINT . '/filter-book', [$arrayKeys[$i] => $query])
+                ->assertStatus(200);
+        }
     }
 }
