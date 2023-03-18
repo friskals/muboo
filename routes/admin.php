@@ -13,5 +13,6 @@ Route::group(['middleware' => 'web'], function () {
             'authors' => AuthorController::class,
             'books' => BookController::class
         ]); 
+        Route::post('books/filter-book', [BookController::class, 'filter'])->name('books.filter');
     });
 }); 

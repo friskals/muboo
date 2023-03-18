@@ -13,7 +13,12 @@ class Book extends Model
         'title',
         'image',
         'is_published',
-        'released_date',
+        'released_date',    
         'category_id'
     ];
+
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', 1);
+    }
 }

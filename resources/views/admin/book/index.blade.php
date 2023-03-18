@@ -8,25 +8,64 @@
 
 @section('content')
 <h4 class="fw-bold py-3">
-    <span class="text-muted fw-light">Book
+    <span class="text-muted fw-light">Book</span>
 </h4>
 
-<div class="mb-4">
-    <button type="button" onclick="location.href='/admin/books/create'" class="btn btn-success">Add</button>
-</div>
+<form method="POST" action="{{route('books.filter')}}">
+    @csrf
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="bookId" class="form-label">Book ID</label>
+                        <input type="text" name="id" class="form-control" id="bookId" placeholder="Book ID" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" name="title" class="form-control" id="title" placeholder="Tinker Bell..." />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="mb-4">
+            <button type="submit"  class="btn btn-info">Search</button>
+</form>
+            <button type="button" onclick="location.href='/admin/books/create'" class="btn btn-success">Add</button>
+        </div>
+    </div>
+@if(isset($title))
+<h4 class="fw-bold py-3">
+    <span class="fw-bold fw-light">{{$title}}</span>
+</h4>
+
+@endif
+@if($books->count() > 0 )
 <div class="card">
     <div class="table-responsive text-nowrap">
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Name</th>
+                <th>ID</th>
+                    <th>Title</th>
+                    <th>Created At</th>
+                    <th>Last Modified</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
-                @if(!$books->isEmpty())
                 @foreach($books as $book)
                 <tr>
-                    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{$book->name}}</strong></td>
+                    <td>{{$book->id}}</td>
+                    <td>{{$book->title}}</td>
                     <td>{{$book->created_at}}</td>
                     <td>{{$book->updated_at}}</td>
                     <td>
@@ -45,9 +84,10 @@
                     </td>
                 </tr>
                 @endforeach
-                @endif
             </tbody>
         </table>
     </div>
 </div>
+@endif
+
 @endsection
