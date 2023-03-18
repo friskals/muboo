@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\Book\UpdateRequest;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\BookAuthor;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
@@ -17,11 +18,24 @@ class BookController extends Controller
         return view('admin.book.index')->with('books', collect([]));
     }
 
+    public function create()
+    {
+        $authors = Author::select('id', 'name')->get();
+        
+        $categories = Category::select('id', 'name')->isActive()->get();
+
+        return view('admin.book.create')->with([
+            'authors' => $authors,
+            'categories' => $categories
+        ]);
+    }
+    
     public function store(StoreRequest $request)
     {
         $image = $request->file('image');
 
         $author = Author::findOrfail($request->author_id);
+
 
         $book = Book::create([
             'title' => $request->title,
@@ -31,7 +45,9 @@ class BookController extends Controller
                 $image->getClientOriginalName(),
                 'public'
             ),
-            'released_at' => $request->released_at
+            'released_date' => $request->released_date,
+            'is_published' => 0,
+            'category_id' => $request->category_id
         ]);
 
         BookAuthor::create([
@@ -43,7 +59,7 @@ class BookController extends Controller
             'image' => $book->image
         ]);
 
-        return "ok";
+        return redirect()->route('books.index');
     }
 
     public function update(UpdateRequest $request, $id)

@@ -27,10 +27,10 @@ class StoreRequest extends FormRequest
     {
         return [
             'title' => 'required|string|min:5',
+            'category_id'=>'required|integer',
             'author_id' =>'required|integer',//butuhh check author_id ada di db/enggak
-            'image'=>['required'],
-            'is_published' =>'required|in:0,1',
-            'released_at' => 'required|date'
+            'image'=>'required|image',
+            'released_date' => 'required|date'
         ];
     }
 }
