@@ -15,8 +15,8 @@ class Category extends Model
         'status'
     ];
 
-    public function isActive()
+    public function scopeIsActive($query)
     {
-        return $this->name == 'Active';
+        return $query->where('status','Active');
     }
 }
