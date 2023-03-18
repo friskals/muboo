@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table($this->table, function ($table) {
-            $table->date('released_at')->after('category_id');
+            $table->date('released_date')->after('category_id');
         });
     }
 
@@ -27,7 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table($this->table, function ($table) {
-            $table->dropColumn('released_at');
+            $table->dropColumn('released_date');
         });
     }
 };

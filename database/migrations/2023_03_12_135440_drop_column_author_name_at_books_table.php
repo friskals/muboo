@@ -28,7 +28,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table($this->table, function ($table) {
-            $table->string('author_name')->after('author_id');
+            $table->string('author_name');
         });
     }
 };
