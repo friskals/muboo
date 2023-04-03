@@ -11,7 +11,7 @@ use App\Models\Book;
 use App\Models\BookAuthor;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
-
+ 
 class BookController extends Controller
 {
     const TOTAL_DEFAULT_ITEM = 15;
@@ -39,6 +39,7 @@ class BookController extends Controller
 
         $author = Author::findOrfail($request->author_id);
 
+        $category = Category::findOrFail($request->category_id);
 
         $book = Book::create([
             'title' => $request->title,
@@ -65,15 +66,54 @@ class BookController extends Controller
         return redirect()->route('books.index');
     }
 
+    public function edit($id){
+        $authors = Author::select('id', 'name')->get();
+
+        $categories = Category::select('id', 'name')->isActive()->get();
+
+        $bookAuthor = BookAuthor::firstWhere('book_id',$id);
+
+        $book = Book::findOrFail($id);
+
+        $category = $categories->firstWhere('id', $book->category_id);
+
+        $bookAuthor->category = $category->name;
+
+        $bookAuthor->releasedDate = $book->released_date;
+
+        return view('admin.book.edit')->with([
+            'authors' => $authors,
+            'categories' => $categories,
+            'book' => $bookAuthor
+        ]);
+
+    }
+
     public function update(UpdateRequest $request, $id)
     {
         $book = Book::findOrFail($id);
+        $bookUpdate = [];
+        $bookAuthorUpdate = [];
 
-        $updated = $request->all();
+        if($request->author_id){
+            $author = Author::find($request->author_id);
+            $bookAuthorUpdate['author_id'] = $author->id;
+            $bookAuthorUpdate['author_name'] = $author->name;
+        }
 
+        if($request->category_id){
+            $bookUpdate['category_id'] = $request->category_id;
+        }
+
+        if($request->title){
+            $bookAuthorUpdate['book_title'] = $request->title;
+            $bookUpdate['title'] = $request->title; 
+        }
+
+ 
         if ($image = $request->file('image')) {
 
-            $updated['image'] = $image->storeAs(
+            $bookUpdate['image'] = $image->storeAs(
                 'images',
                 $image->getClientOriginalName(),
                 'public'
@@ -82,9 +122,18 @@ class BookController extends Controller
             Storage::disk('public')->delete($book->image);
         }
 
-        $book->update($updated);
 
-        return "ok";
+        if(count($bookUpdate)){
+            $book->update($bookUpdate);
+        }
+
+        if(count($bookAuthorUpdate)){
+            BookAuthor::where('book_id', $book->id)->update($bookAuthorUpdate);
+        }
+
+        session()->flash('success', 'Book updated successfully');
+
+        return redirect()->route('books.index');
     }
 
     public function destroy($id)
@@ -94,8 +143,10 @@ class BookController extends Controller
         Storage::disk('public')->delete($book->image);
 
         $book->delete();
+        
+        session()->flash('success', 'Book deleted successfully');
 
-        return "ok";
+        return redirect()->route('books.index');
     }
 
     public function show($id)
@@ -110,7 +161,7 @@ class BookController extends Controller
         $title = 'Not Found';
         $books = collect([]);
 
-        if ($request->has('id')) {
+        if ($request->id) {
             $books = Book::where('id', $request->id)->get();
             unset($title);
         }
