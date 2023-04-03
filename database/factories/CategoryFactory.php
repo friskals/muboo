@@ -18,7 +18,8 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name'=> $this->faker->word(1)
+            'name'=> $this->faker->word(1),
+            'status' => 'Active'
         ];
     }
 }
