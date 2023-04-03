@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\BookAuthor;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -77,7 +78,11 @@ class BookTest extends TestCase
 
     public function test_update_book_success_with_image()
     {
-        $book = Book::factory()->create();
+        $this->signIn();
+
+        $book = BookAuthor::factory()->create();
+ 
+        $this->get(self::ENDPOINT."/{$book->book_id}/edit")->assertStatus(200);
 
         Storage::fake('images');
 
@@ -85,9 +90,7 @@ class BookTest extends TestCase
 
         $request = ['image' => $image];
 
-        $response = $this->put(self::ENDPOINT . "/{$book->id}", $request);
-
-        $response->assertStatus(200);
+        $response = $this->put(self::ENDPOINT . "/{$book->book_id}", $request)->assertStatus(200);
 
         Storage::disk('public')->assertMissing($book->image);
 
