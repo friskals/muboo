@@ -42,6 +42,11 @@
             <button type="button" onclick="location.href='/admin/books/create'" class="btn btn-success">Add</button>
         </div>
     </div>
+
+    @if(Session::has('success'))
+        <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('success') }}</p>
+    @endif
+    
 @if(isset($title))
 <h4 class="fw-bold py-3">
     <span class="fw-bold fw-light">{{$title}}</span>
@@ -58,6 +63,7 @@
                     <th>Title</th>
                     <th>Created At</th>
                     <th>Last Modified</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -68,6 +74,8 @@
                     <td>{{$book->title}}</td>
                     <td>{{$book->created_at}}</td>
                     <td>{{$book->updated_at}}</td>
+                    <td>{{$book->status}}</td>
+
                     <td>
                         <div class="dropdown">
                             <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button>
@@ -78,6 +86,19 @@
                                 <form id="delete-form-{{ $book->id }}" action="{{ route('books.destroy', $book->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
+                                </form>
+                                <a class="dropdown-item" href="{{route('books.update.status')}}" onclick="event.preventDefault();
+                                document.getElementById('update-status-form-{{ $book->id }}').submit();"><i class="bx bx-trash me-1"> </i>
+                                    @if($book->is_published)
+                                        Unpublish
+                                    @else
+                                        Publish
+                                    @endif
+                                </a>
+                                <form id="update-status-form-{{ $book->id }}" action="{{ route('books.update.status') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="book_id" value="{{$book->id}}">
+                                    @method('PUT')
                                 </form>
                             </div>
                         </div>
