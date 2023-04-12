@@ -20,6 +20,9 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Created at</th>
+                    <th>Last Modified</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Frontsite\BookController;
 use App\Http\Controllers\GeneralPageController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,16 +12,20 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
+| Here is where you can register web routes for your application. These 
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
 */
 
+Route::get('/', [BookController::class, 'index'])->name('home');
+
+
 $controller_path = 'App\Http\Controllers';
 
+
 // Main Page Route
-Route::get('/', $controller_path . '\dashboard\Analytics@index')->name('dashboard-analytics');
+// Route::get('/', $controller_path . '\dashboard\Analytics@index')->name('dashboard-analytics');
 
 // layout
 Route::get('/layouts/without-menu', $controller_path . '\layouts\WithoutMenu@index')->name('layouts-without-menu');
