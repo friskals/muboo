@@ -29,7 +29,9 @@ class BookFactory extends Factory
             'image' => $image->storeAs('images', $image->name, 'public'),
             'category_id' => $category->id,
             'released_date' => now()->toDate(),
-            'is_published'=> 0
+            'is_published'=> rand(0,1),
+            'published_date' => now()->toDate(),
+            'excerpts' => $this->faker->sentence(10)
         ];
     }
 }
