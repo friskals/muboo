@@ -46,6 +46,10 @@
             </div>
           </div>
           <div class="mb-3">
+            <label for="excerptsTextArea" class="form-label">Excerpts</label>
+            <textarea class="form-control" name="excerpts" id="excerptsTextArea" rows="3">{{$book->excerpts}}</textarea>
+          </div>
+          <div class="mb-3">
             <label for="formFile" class="form-label">Image</label>
              <img class="card-img-top" src="/storage/{{$book->image}}" alt="Card image cap"> 
             <input class="form-control" type="file" id="formFile" name="image">

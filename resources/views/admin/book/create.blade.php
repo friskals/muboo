@@ -40,10 +40,14 @@
             </datalist>
           </div>
           <div class="mb-3">
-            <label for="html5-datetime-local-input" class="form-label">Datetime</label>
+            <label for="html5-datetime-local-input" class="form-label">Release date</label>
             <div class="col-md-10">
               <input class="form-control" name="released_date" type="date" value="2021-06-18T12:30:00" id="html5-datetime-local-input" />
             </div>
+          </div>
+          <div class="mb-3">
+            <label for="excerptsTextArea" class="form-label">Excerpts</label>
+            <textarea class="form-control" name="excerpts" id="excerptsTextArea" rows="3" placeholder="Best excerpt from this book"></textarea>
           </div>
           <div class="mb-3">
             <label for="formFile" class="form-label">Image</label>

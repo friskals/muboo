@@ -27,7 +27,6 @@ class UpdateRequest extends FormRequest
         return [
             'title' => 'string',
             'author_id' => 'integer',
-            'author_name' => 'string',
             'is_published' => 'integer',
             'image' => [File::types(['jpeg', 'jpg','png',''])
                 ->max(2 * 1024)]

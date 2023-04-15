@@ -14,7 +14,8 @@ class Book extends Model
         'image',
         'is_published',
         'released_date',
-        'category_id'
+        'category_id',
+        'excerpts'
     ];
 
     public function scopePublished($query)

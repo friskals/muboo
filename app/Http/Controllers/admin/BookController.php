@@ -41,8 +41,6 @@ class BookController extends Controller
 
         $author = Author::findOrfail($request->author_id);
 
-        $category = Category::findOrFail($request->category_id);
-
         $book = Book::create([
             'title' => $request->title,
             'is_published' => $request->is_published,
@@ -53,7 +51,8 @@ class BookController extends Controller
             ),
             'released_date' => $request->released_date,
             'is_published' => 0,
-            'category_id' => $request->category_id
+            'category_id' => $request->category_id,
+            'excerpts' => $request->excerpts
         ]);
 
         BookAuthor::create([
@@ -66,6 +65,7 @@ class BookController extends Controller
         ]);
 
         return redirect()->route('books.index');
+        
     }
 
     public function edit($id)
@@ -83,6 +83,8 @@ class BookController extends Controller
         $bookAuthor->category = $category->name;
 
         $bookAuthor->releasedDate = $book->released_date;
+
+        $bookAuthor->excerpts = $book->excerpts;
 
         return view('admin.book.edit')->with([
             'authors' => $authors,
@@ -112,6 +114,9 @@ class BookController extends Controller
             $bookUpdate['title'] = $request->title;
         }
 
+        if($request->excerpts){
+            $bookUpdate['excerpts'] = $request->excerpts;
+        }
 
         if ($image = $request->file('image')) {
 

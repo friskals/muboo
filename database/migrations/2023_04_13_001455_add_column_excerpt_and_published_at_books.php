@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::table($this->table, function($table) {
             $table->date('published_date')->after('released_date')->nullable();
-            $table->string('excerpts')->after('published_date')->nullable();
+            $table->string('excerpts')->after('published_date');
         });
     }
 

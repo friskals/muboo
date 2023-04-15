@@ -19,4 +19,8 @@ class Category extends Model
     {
         return $query->where('status','Active');
     }
+
+    public function isActive(){
+        return $this->status == 'Active';
+    }
 }
