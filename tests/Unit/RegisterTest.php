@@ -19,6 +19,6 @@ class RegisterTest extends  TestCase
             'password' => 'Apapap123**',
             'password_confirmation' => 'Apapap123**'
         ])
-            ->assertRedirect('/');
+            ->assertRedirect('/dashboard');
     }
 }

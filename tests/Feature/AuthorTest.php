@@ -33,6 +33,8 @@ class AuthorTest extends TestCase
 
     public function test_show_author_success()
     {
+        $this->signIn();
+
         $author = Author::factory()->create();
 
         $response = $this->get(self::ENDPOINT . '/' . $author->id);

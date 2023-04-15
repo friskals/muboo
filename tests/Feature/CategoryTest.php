@@ -28,6 +28,8 @@ class CategoryTest extends TestCase
 
     public function test_show_category_success()
     {
+        $this->signIn();
+
         $category = Category::factory()->create();
 
         $response = $this->get('/admin/categories/' . $category->id);
@@ -39,16 +41,16 @@ class CategoryTest extends TestCase
 
     public function test_update_category_success()
     {
+        $this->signIn();
 
         $category = Category::factory()->create();
 
         $name_update = 'Science update';
 
-        $response = $this->put('/admin/categories/' . $category->id, ['name' => $name_update]);
+        $this->put('/admin/categories/' . $category->id, ['name' => $name_update,'status'=>'Active'])
+        ->assertRedirect(route('categories.index'));
 
-        $category->refresh();
-
-        $response->assertStatus(200);
+        $category->refresh(); 
 
         $this->assertEquals($name_update, $category->name);
 
@@ -57,11 +59,12 @@ class CategoryTest extends TestCase
 
     public function test_delete_category_success()
     {
-        $category = Category::factory()->create();
+        $this->signIn();
 
-        $response = $this->delete('/admin/categories/' . $category->id);
+        $category = Category::create(['name'=>'lorem ipsum','status'=>'Inactive']);
 
-        $response->assertStatus(200);
+        $this->delete('/admin/categories/' . $category->id)
+        ->assertRedirect(route('categories.index'));
 
         $this->assertDatabaseMissing('categories', ['id' => $category->id, 'name' => $category->name]);
     }
