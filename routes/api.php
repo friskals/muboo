@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Frontsite\MusicController;
 use Illuminate\Http\Request;
@@ -25,3 +26,5 @@ Route::post('content', [ContentController::class, 'store']);
 Route::put('content', [ContentController::class, 'update']);
 Route::delete('content', [ContentController::class, 'destroy']);
 Route::get('content/{id}', [ContentController::class, 'show']);
+Route::get('book/{id}', [BookController::class, 'show']);
+
