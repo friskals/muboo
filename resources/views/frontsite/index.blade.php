@@ -17,10 +17,8 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 
   $.ajax({
         type: 'get',
-        url: "/api/book/"+bookId,
+        url: "/book/"+bookId,
         success: function(data) {
-
-            console.log(data);
             book = data.book
             reviews =  data.reviews
 
@@ -28,7 +26,7 @@ $('#exampleModal').on('show.bs.modal', function (event) {
             modal.find('.excerpts').text(book.excerpts)
             appendedReviews = '';
             for(i = 0 ; i < reviews.length; i++){
-                appendedReviews+='<figure class="mt-2 small"><blockquote class="blockquote"><small class="text-dark">'+reviews[i].content+'</small></blockquote><figcaption class="blockquote-footer">friska</figcaption></figure>'
+                appendedReviews+='<figure class="mt-2 small"><blockquote class="blockquote"><small class="text-dark">'+reviews[i].content+'</small></blockquote><figcaption class="blockquote-footer" style="text-align:right">'+reviews[i].reviewer+'</figcaption></figure>'
 
             }
             modal.find('.reviews').html(" ");
@@ -40,7 +38,51 @@ $('#exampleModal').on('show.bs.modal', function (event) {
     });
 
 })
-  
+
+$('#addReview').submit(function(e){
+    e.preventDefault();
+    var modal = $(this)
+    bookId = modal.find('#bookdId').val()
+    contentType = modal.find('#contentType').val()
+    content = modal.find('#content').val() 
+    token = modal.find('#token').val()
+    // return;
+
+    $.ajax({
+        url: '/content',
+        type: 'POST',
+        beforeSend: function (jqXHR, settings) { 
+            jqXHR.setRequestHeader('X-CSRF-Token', token);
+        },
+        data: {
+            'book_id':bookId,
+            'type':contentType,
+            'content':content,
+        },
+        success:function(data){
+            $.ajax({
+                url: '/content/'+ data.content_id,
+                type: 'GET',
+                beforeSend: function (jqXHR, settings) { 
+                    jqXHR.setRequestHeader('X-CSRF-Token', token);
+                },
+                success:function(response){ 
+                    newReview ='<figure class="mt-2 small"><blockquote class="blockquote"><small class="text-dark">'+response.data.content+'</small></blockquote><figcaption class="blockquote-footer" style="text-align:right">'+response.data.reviewer+'</figcaption></figure>'                    
+                    $(".reviews").prepend(newReview);
+                    $("#content").val("") 
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+
+            }) 
+        },
+        error: function(e) {
+                    console.log(e);
+        }
+
+    })
+})
 </script>
 
 @endsection
@@ -81,9 +123,12 @@ $('#exampleModal').on('show.bs.modal', function (event) {
                        </div>
                     </div>
                     <div class="modal-footer">
-                        <form>
-                        <textarea name="" id="" cols="40" rows="1" style="outline: none; border:none;" placeholder="What's your thougth?"></textarea>
-                        <button type="button" class="btn btn-primary">Post</button>
+                        <form  id="addReview">
+                            <input type="hidden" id="bookdId" name="book_id" value="{{$book->id}}">
+                            <input type="hidden" id="contentType" name="type" value="REVIEW">
+                            <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
+                            <textarea id="content" cols="40" rows="1" style="outline: none; border:none;" placeholder="What's your thougth?"></textarea>
+                            <button type="submit" class="btn btn-primary">Post</button>
                         </form>
                     </div>
                     </div>
