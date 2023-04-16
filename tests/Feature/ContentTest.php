@@ -10,17 +10,19 @@ use Tests\TestCase;
 
 class ContentTest extends TestCase
 {
+    private const ENDPOINT ='content/';
+
     use RefreshDatabase;
 
     public function test_successfully_add_content()
     {
-        $this->post('/api/content', $this->setContent())->assertStatus(200)
+        $this->post(self::ENDPOINT, $this->setContent())->assertStatus(200)
             ->assertJsonStructure(['content_id', 'success']);
     }
 
     public function test_successfully_update_content()
     {
-        $response = $this->post('/api/content', $this->setContent())
+        $response = $this->post(self::ENDPOINT, $this->setContent())
             ->assertStatus(200)
             ->getContent();
 
@@ -31,7 +33,7 @@ class ContentTest extends TestCase
             'content' => 'udpate content'
         ];
 
-        $this->put('/api/content', $new_data)
+        $this->put(self::ENDPOINT, $new_data)
             ->assertStatus(200)
             ->assertJsonStructure(['success']);
 
@@ -57,26 +59,26 @@ class ContentTest extends TestCase
 
     public function test_successfully_delete_content()
     {
-        $response = $this->post('/api/content', $this->setContent())
+        $response = $this->post(self::ENDPOINT, $this->setContent())
             ->assertStatus(200)
             ->getContent();
 
         $response = json_decode($response);
 
-        $this->delete('/api/content', ['content_id' => $response->content_id])
+        $this->delete(self::ENDPOINT, ['content_id' => $response->content_id])
             ->assertStatus(200)
             ->assertJsonStructure(['success']);
     }
 
     public function test_successfully_see_content()
     {
-        $response = $this->post('/api/content', $this->setContent())
+        $response = $this->post(self::ENDPOINT, $this->setContent())
             ->assertStatus(200)
             ->getContent();
 
         $response = json_decode($response);
 
-        $this->get('/api/content/' . $response->content_id)
+        $this->get(self::ENDPOINT . $response->content_id)
             ->assertStatus(200)
             ->assertJsonStructure(['success', 'data']);
     }
@@ -91,7 +93,7 @@ class ContentTest extends TestCase
          * 4. Delete Content
          */
 
-        $response = $this->post('/api/content', $this->setContent())
+        $response = $this->post(self::ENDPOINT, $this->setContent())
             ->assertStatus(200)
             ->getContent();
 
@@ -102,7 +104,7 @@ class ContentTest extends TestCase
             'content' => 'udpate content'
         ];
 
-        $this->put('/api/content', $new_data)
+        $this->put(self::ENDPOINT, $new_data)
             ->assertStatus(200)
             ->assertJsonStructure(['success']);
 
@@ -111,11 +113,11 @@ class ContentTest extends TestCase
         $this->assertEquals($new_data['content'], $content->content);
 
 
-        $this->get('/api/content/' . $response->content_id)
+        $this->get(self::ENDPOINT . $response->content_id)
             ->assertStatus(200)
             ->assertSee([$new_data['content'], $content->id]);
 
-        $this->delete('/api/content', ['content_id' => $response->content_id])
+        $this->delete(self::ENDPOINT, ['content_id' => $response->content_id])
             ->assertStatus(200)
             ->assertJsonStructure(['success']);
     }
