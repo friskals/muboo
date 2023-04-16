@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Frontsite;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Content\DestroyRequest;
 use App\Http\Requests\Api\Content\StoreRequest;
 use App\Http\Requests\Api\Content\UpdateRequest;
 use App\Models\Content;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ContentController extends Controller
 {
@@ -15,6 +17,7 @@ class ContentController extends Controller
     {
         $request = $request->validated();
         $request['user_id'] = Auth::user()->id;
+        Log::info("request content " . json_encode($request));
         $content = Content::create($request);
 
         return response()->json([
@@ -51,6 +54,10 @@ class ContentController extends Controller
     public function show($id)
     {
         $content =  Content::findOrFail($id);
+
+        $reviewer = User::findOrFail($content->user_id);
+        $content->reviewer = $reviewer->name;
+        
         return response()->json([
             'success' => 'true',
             'data' => $content

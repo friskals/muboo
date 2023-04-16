@@ -20,11 +20,3 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('music/search', [MusicController::class, 'search']);
-Route::post('content', [ContentController::class, 'store']);
-Route::put('content', [ContentController::class, 'update']);
-Route::delete('content', [ContentController::class, 'destroy']);
-Route::get('content/{id}', [ContentController::class, 'show']);
-Route::get('book/{id}', [BookController::class, 'show']);
-

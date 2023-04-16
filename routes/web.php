@@ -4,6 +4,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Frontsite\BookController;
+use App\Http\Controllers\Frontsite\ContentController;
+use App\Http\Controllers\Frontsite\MusicController;
 use App\Http\Controllers\GeneralPageController;
 use Illuminate\Support\Facades\Route;
 
@@ -95,3 +97,11 @@ Route::post('/logout', [LogoutController::class, 'perform'])->name('logout');
 Route::post('/login',[LoginController   ::class,'login'])->name('login');
 
 Route::get('/unauthorized', [GeneralPageController::class, 'returnPage401'])->name('unauthorized');
+
+Route::get('music/search', [MusicController::class, 'search'])->name('music.search');
+Route::post('content', [ContentController::class, 'store'])->name('content.add');
+Route::put('content', [ContentController::class, 'update'])->name('content.update');
+Route::delete('content', [ContentController::class, 'destroy'])->name('content.destroy');
+Route::get('content/{id}', [ContentController::class, 'show'])->name('content.detail');
+
+Route::get('book/{id}', [BookController::class, 'show']);
