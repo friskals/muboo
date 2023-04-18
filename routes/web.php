@@ -103,5 +103,5 @@ Route::post('content', [ContentController::class, 'store'])->name('content.add')
 Route::put('content', [ContentController::class, 'update'])->name('content.update');
 Route::delete('content', [ContentController::class, 'destroy'])->name('content.destroy');
 Route::get('content/{id}', [ContentController::class, 'show'])->name('content.detail');
-
+Route::post('book/music/', [MusicController::class, 'addMusic']);
 Route::get('book/{id}', [BookController::class, 'show']);

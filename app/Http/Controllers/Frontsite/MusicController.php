@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Frontsite;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Frontsite\AddMusicRequest;
 use App\Http\Utils\ApiResponse;
+use App\Models\BookMusic;
+use App\Models\MusicFan;
 use Illuminate\Http\Request;
-use Illuminate\Routing\ResponseFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class MusicController extends Controller
@@ -41,5 +44,32 @@ class MusicController extends Controller
         }
 
         return ApiResponse::format($videos, 200, ['success' => true]);
+    }
+
+    public function addMusic(AddMusicRequest $request)
+    {
+        $request = $request->validated();
+        $dispayed = true;
+
+        $addedMusic = BookMusic::where(['book_id' => $request['book_id'], 'external_music_id' => $request['external_music_id']])->first();
+
+        if ($addedMusic) {
+            $addedMusic->increment('fans');
+            $addedMusic->refresh();
+            $dispayed = false;
+        } else {
+            $request['fans'] = 1;
+            $addedMusic =  BookMusic::create($request);
+        }
+
+        MusicFan::create([
+            'music_id' => $addedMusic->id,
+            'user_id' => Auth::user()->id 
+        ]);
+
+        return ApiResponse::format([
+            'music_id' => $addedMusic->id,
+            'displayed' => $dispayed
+        ],  200, ['success' => true]);
     }
 }

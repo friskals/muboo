@@ -18,6 +18,8 @@ class Book extends Model
         'excerpts'
     ];
 
+    protected $append = ['short_title'];
+
     public function scopePublished($query)
     {
         return $query->where('is_published', 1);
@@ -26,5 +28,10 @@ class Book extends Model
     public function getStatusAttribute()
     {
         return $this->is_published  == 1 ? "Published" : "Unpublished";
+    }
+
+    public function getShortTitleAttribute()
+    {
+        return strlen($this->title) > 30 ? substr($this->title, 0, 25) . '. . . .' : $this->title;
     }
 }
