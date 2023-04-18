@@ -16,10 +16,19 @@
   
     <div class="menu-inner-shadow"></div>
   
-    <ul class="menu-inner py-1">
-       {{-- Need to show all the book header --}}
+    <div class="row mt-3 ml-3">
+      <h5 class="card-title text-primary">Book today!</h5>
+      @foreach($books as $book)
+        <h6 class="mb-3">{{$book->short_title}}</h6>      
+      @endforeach 
+    </div>
 
-    </ul>
+    <div class="row mt-3 ml-3 mt-5">
+      <h5 class="card-title text-primary">Hit Author!</h5>
+      @foreach($authors as $author)
+      <h6 class="mb-3">{{$author->name}}</h6>      
+    @endforeach
+    </div>
   
   </aside>
   
