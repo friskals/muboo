@@ -94,7 +94,7 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::post('/logout', [LogoutController::class, 'perform'])->name('logout');
 
-Route::post('/login',[LoginController   ::class,'login'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 Route::get('/unauthorized', [GeneralPageController::class, 'returnPage401'])->name('unauthorized');
 
@@ -104,4 +104,5 @@ Route::put('content', [ContentController::class, 'update'])->name('content.updat
 Route::delete('content', [ContentController::class, 'destroy'])->name('content.destroy');
 Route::get('content/{id}', [ContentController::class, 'show'])->name('content.detail');
 Route::post('book/music/', [MusicController::class, 'addMusic']);
+Route::get('book/music/{id}', [MusicController::class, 'show']);
 Route::get('book/{id}', [BookController::class, 'show']);

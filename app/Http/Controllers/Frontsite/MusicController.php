@@ -64,12 +64,19 @@ class MusicController extends Controller
 
         MusicFan::create([
             'music_id' => $addedMusic->id,
-            'user_id' => Auth::user()->id 
+            'user_id' => Auth::user()->id
         ]);
 
         return ApiResponse::format([
             'music_id' => $addedMusic->id,
             'displayed' => $dispayed
         ],  200, ['success' => true]);
+    }
+
+    public function show($id)
+    {
+        $music = BookMusic::findOrFail($id);
+
+        return ApiResponse::format([$music], 200, ['success' => true]);
     }
 }
