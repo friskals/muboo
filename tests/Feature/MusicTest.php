@@ -1,14 +1,13 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use App\Models\Book;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\TestCase;
-use Tests\TestCase as TestsTestCase;
+use Tests\TestCase;
 
-class MusicTest extends TestsTestCase
+class MusicTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -49,7 +48,6 @@ class MusicTest extends TestsTestCase
             'title' => 'music title'
         ]);
 
-
         $this->assertDatabaseHas('music_fans', [
             'music_id' => $book->id,
             'user_id' => $user->id
@@ -58,6 +56,26 @@ class MusicTest extends TestsTestCase
 
     public function test_get_particular_music_for_book()
     {
+        $this->signIn();
+
         $book = Book::factory()->create();
+
+        $request = [
+            'book_id' => $book->id,
+            'external_music_id' => 'abc',
+            'title' => 'music title'
+        ];
+
+        $response = $this->post('book/music', $request)->assertStatus(200)
+            ->assertStatus(200)
+            ->getContent();
+
+        $response = json_decode($response);
+
+        $this->get('book/music/' . $response->data->music_id)->assertStatus(200)
+            ->assertJsonStructure(['success', 'data'])
+            ->assertSee($request['title'])
+            ->assertSee($request['book_id'])
+            ->assertSee($request['external_music_id']);
     }
 }
