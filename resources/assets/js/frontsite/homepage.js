@@ -1,5 +1,4 @@
-
-$('#exampleModal').on('show.bs.modal', function (event) {
+$('#bookReviews').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget)  
   var bookId = button.data('book-id')
   var modal = $(this)
@@ -37,7 +36,6 @@ $('#addReview').submit(function(e){
     contentType = modal.find('#contentType').val()
     content = modal.find('#content').val() 
     token = modal.find('#token').val()
-    // return;
 
     $.ajax({
         url: '/content',
