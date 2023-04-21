@@ -106,3 +106,5 @@ Route::get('content/{id}', [ContentController::class, 'show'])->name('content.de
 Route::post('book/music/', [MusicController::class, 'addMusic']);
 Route::get('book/music/{id}', [MusicController::class, 'show']);
 Route::get('book/{id}', [BookController::class, 'show']);
+Route::post('book/{id}/music', [MusicController::class, 'getMusicList']);
+

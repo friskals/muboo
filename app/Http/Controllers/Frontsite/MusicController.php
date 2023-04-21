@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontsite;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontsite\AddMusicRequest;
+use App\Http\Requests\Frontsite\Music\GetListRequest;
 use App\Http\Utils\ApiResponse;
 use App\Models\BookMusic;
 use App\Models\MusicFan;
@@ -19,7 +20,7 @@ class MusicController extends Controller
 
         $q = $request->input('q');
 
-        $uri = "https://www.googleapis.com/youtube/v3/search?key={$api_key}&q={$q}&type=video&part=snippet";
+        $uri = "https://youtube.googleapis.com/youtube/v3/search?key={$api_key}&q={$q}&type=video&part=snippet";
 
         $response = Http::get($uri);
 
@@ -78,5 +79,11 @@ class MusicController extends Controller
         $music = BookMusic::findOrFail($id);
 
         return ApiResponse::format([$music], 200, ['success' => true]);
+    }
+
+    public function getMusicList($bookId, GetListRequest $request){
+        $music = BookMusic::where('book_id', $bookId)->limit($request->limit)->get();
+
+        return ApiResponse::format($music->toArray(), 200, ['success' => true]);
     }
 }
