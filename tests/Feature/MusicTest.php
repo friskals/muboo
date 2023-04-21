@@ -39,7 +39,8 @@ class MusicTest extends TestCase
             'title' => 'music title'
         ];
 
-        $this->post('book/music', $request)->assertStatus(200)
+        $this->post('book/music', $request)
+            ->assertStatus(200)
             ->assertJsonStructure(['success', 'data']);
 
         $this->assertDatabaseHas('musics', [
@@ -66,16 +67,48 @@ class MusicTest extends TestCase
             'title' => 'music title'
         ];
 
-        $response = $this->post('book/music', $request)->assertStatus(200)
+        $response = $this->post('book/music', $request)
             ->assertStatus(200)
             ->getContent();
 
         $response = json_decode($response);
 
-        $this->get('book/music/' . $response->data->music_id)->assertStatus(200)
+        $this->get('book/music/' . $response->data->music_id)
             ->assertJsonStructure(['success', 'data'])
             ->assertSee($request['title'])
             ->assertSee($request['book_id'])
             ->assertSee($request['external_music_id']);
+    }
+
+    public function test_get_musics_for_a_book()
+    {
+        $this->signIn();
+
+        $book = Book::factory()->create();
+
+        $request = [
+            'book_id' => $book->id,
+            'external_music_id' => 'abc',
+            'title' => 'music title'
+        ];
+
+        $this->post('book/music', $request)
+            ->assertStatus(200)
+            ->getContent();
+
+        $this->post('book/music', $request)
+            ->assertStatus(200)
+            ->getContent();
+
+        $listMusicRequest = [
+            'pagination' => 5
+        ];
+
+        $reponse = $this->post('/book/'.$book->id.'/music', $listMusicRequest)
+        ->assertStatus(200)
+        ->assertJsonStructure(['success','data'])
+        ->assertSee($request['title'])
+        ->assertSee($request['book_id'])
+        ->assertSee($request['external_music_id']);
     }
 }
