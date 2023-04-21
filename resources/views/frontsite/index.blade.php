@@ -33,7 +33,7 @@
                         </a>
                     </div>
 
-                    {{-- Start Book Review --}}
+                    <!--Start Book Review -->
                     <div class="modal fade" id="bookReviews" tabindex="-1" role="dialog"
                         aria-labelledby="bookReviewsLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -66,10 +66,9 @@
                             </div>
                         </div>
                     </div>
+                    <!-- End Start Book Review -->
 
-                    {{--  End Start Book Review --}}
-
-                    {{-- Start Recommended Song --}}
+                    <!-- Start Recommended Song -->
                     <div class="modal fade" id="recommendedSong" tabindex="-1" role="dialog"
                         aria-labelledby="recommendedSongLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -91,40 +90,61 @@
                                         <input type="hidden" id="contentType" name="type" value="REVIEW">
                                         <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
                                         <input type="text" placeholder="add your fav!"
-                                            style="outline: none; border:none;" id="chosenMusic" name="song" />
+                                            style="outline: none; border:none;" id="chosenMusic" name="song"
+                                            data-toggle="modal" data-target="#showMusic" />
                                         <button type="submit" class="btn btn-primary">Post</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- End Recommended Song -->
 
-                    {{--  End Recommended Song --}}
-
-                    <!-- Modal -->
-                    <div id="showMusic" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-                        aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
+                    <!-- Modal searched song -->
+                    <div class="modal fade" id="showMusic" role="dialog" aria-labelledby="showMusicLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <div class="card-body">
-                                    <form id="searchSong">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="basic-default-fullname">Music/Song title</label>
-                                            <input type="text" class="form-control" id="songTitle"
-                                                placeholder="Title..."  />
- 
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Choose your music!</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card-body">
+                                        <form id="searchSong">
+                                            <div class="input-group">
+                                                <input type="text" id="musicTitle" class="form-control"
+                                                    placeholder="Your music title" aria-label="Your music title"
+                                                    aria-describedby="button-addon2">
+                                                <button class="btn btn-outline-primary" type="button"
+                                                    id="button-addon2">Search</button>
+                                            </div>
+                                        </form>
+                                        <div class="row mt-1" id="searchedSong">
+                                            <div class="col mb-4 mt-4">
+                                                <small class="text-dark fw-semibold">Result....</small>
+                                            </div>
+                                            <div class="div-row">
+                                                <form id="pickMusic">
+                                                    <input type="hidden" id="token" name="_token"
+                                                        value="{{ csrf_token() }}">
+                                                    <a href="#">
+                                                        <i class="bx bxl-youtube text-danger"></i>
+                                                        <small class="text-dark fw-semibold ml-2">judul</small>
+                                                    </a>
+                                                    <button type="submit"
+                                                        class="btn btn-primary btn-sm float-sm-end">Pick</button>
+                                                </form>
+                                            </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Search</button>
-                                    </form>
-                                    <div class="row">
-                                        <p id="searchedSong">Result...</p>
-                                        <button class="btn btn-outline-primary" type="button" id="button-addon1">Button</button>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
+                    <!--end of modal searched song -->
 
                 </div>
             </div>

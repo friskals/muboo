@@ -90,7 +90,6 @@ $('#recommendedSong').on('show.bs.modal', function (event) {
         },
         success: function (data) {
             musics = data.data
-            console.log(musics)
             appendedMusic = '';
             for (i = 0; i < musics.length; i++) {
                 appendedMusic+='<a href="https://www.youtube.com/watch?v='+musics[i].external_music_id+'" style="color: #000000;text-decoration: none;"><i class="bx bxl-youtube"></i></a><small class="text-dark fw-semibold ml-1">'+musics[i].title+'</small>'
@@ -105,3 +104,30 @@ $('#recommendedSong').on('show.bs.modal', function (event) {
 
 })
 
+
+$('#searchSong').submit(function (e) {
+    console.log("here");
+    e.preventDefault();
+    var modal = $(this)
+    musicTitle = modal.find("musicTitle").val()
+
+    $.ajax({
+        url: '/music/search?q='+musicTitle,
+        type: 'GET',
+        success: function (data) {
+            musics =  data.data
+
+            appendedMusic = '';
+            
+            console.log(data);
+            
+            for (i = 0; i < musics.length; i++) {
+                appendedMusic+='<a href="https://www.youtube.com/watch?v='+musics['id']+'" style="color: #000000;text-decoration: none;"><i class="bx bxl-youtube"></i></a><small class="text-dark fw-semibold ml-1">'+musics[i].title+'</small> <button>'
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+
+    })
+})
