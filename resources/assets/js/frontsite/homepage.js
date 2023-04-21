@@ -92,7 +92,7 @@ $('#recommendedSong').on('show.bs.modal', function (event) {
             musics = data.data
             appendedMusic = '';
             for (i = 0; i < musics.length; i++) {
-                appendedMusic+='<a href="https://www.youtube.com/watch?v='+musics[i].external_music_id+'" style="color: #000000;text-decoration: none;"><i class="bx bxl-youtube"></i></a><small class="text-dark fw-semibold ml-1">'+musics[i].title+'</small>'
+                appendedMusic += '<a href="https://www.youtube.com/watch?v=' + musics[i].external_music_id + '" style="color: #000000;text-decoration: none;"><i class="bx bxl-youtube"></i></a><small class="text-dark fw-semibold ml-1">' + musics[i].title + '</small>'
             }
             modal.find('.music').html(" ");
             modal.find('.music').append(appendedMusic)
@@ -104,26 +104,38 @@ $('#recommendedSong').on('show.bs.modal', function (event) {
 
 })
 
+/**
+ * Clear element at shown music modal
+ */
+$('#showMusic').on('shown.bs.modal', function () {
+    var modal = $(this)
+    modal.find("#searchedSong").html(" ");
+    $("#musicTitle").val("")
+});
 
 $('#searchSong').submit(function (e) {
-    console.log("here");
     e.preventDefault();
     var modal = $(this)
-    musicTitle = modal.find("musicTitle").val()
+    musicTitle = modal.find("#musicTitle").val()
 
     $.ajax({
-        url: '/music/search?q='+musicTitle,
+        url: '/music/search?q=' + musicTitle,
         type: 'GET',
         success: function (data) {
-            musics =  data.data
+            musics = data.data
 
-            appendedMusic = '';
-            
-            console.log(data);
-            
+            musicSearched = '<div class="col mb-4 mt-4"> <small class="text-dark fw-semibold">Result</small></div><div class="div-row" >'
+
             for (i = 0; i < musics.length; i++) {
-                appendedMusic+='<a href="https://www.youtube.com/watch?v='+musics['id']+'" style="color: #000000;text-decoration: none;"><i class="bx bxl-youtube"></i></a><small class="text-dark fw-semibold ml-1">'+musics[i].title+'</small> <button>'
+                musicSearched += '<div class="row mb-1"><form id="pickMusic" class="mb-3"><input type="hidden" id="token" name="_token" value="{{ csrf_token() }}"> <a href="https://www.youtube.com/watch?v=' + musics[i].id + '""><i class="bx bxl-youtube text-danger"></i> <small class="text-dark fw-semibold ml-2">' + musics[i].title + '</small></a><button type="submit" class="btn btn-primary btn-sm float-sm-end">Pick</button> </form></div>'
             }
+
+            musicSearched += '</div>'
+
+            $("#searchedSong").html(" ");
+
+            $("#searchedSong").append(musicSearched)
+
         },
         error: function (e) {
             console.log(e);

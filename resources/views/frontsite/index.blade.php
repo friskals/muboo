@@ -115,29 +115,15 @@
                                     <div class="card-body">
                                         <form id="searchSong">
                                             <div class="input-group">
-                                                <input type="text" id="musicTitle" class="form-control"
-                                                    placeholder="Your music title" aria-label="Your music title"
-                                                    aria-describedby="button-addon2">
-                                                <button class="btn btn-outline-primary" type="button"
-                                                    id="button-addon2">Search</button>
+                                                <input type="text" id="musicTitle" name="music_title"
+                                                    class="form-control" placeholder="Your music title" required>
+                                                <input type="hidden" id="token" name="_token"
+                                                    value="{{ csrf_token() }}">
+                                                <button type="submit" class="btn btn-outline-primary">Search</button>
                                             </div>
                                         </form>
                                         <div class="row mt-1" id="searchedSong">
-                                            <div class="col mb-4 mt-4">
-                                                <small class="text-dark fw-semibold">Result....</small>
-                                            </div>
-                                            <div class="div-row">
-                                                <form id="pickMusic">
-                                                    <input type="hidden" id="token" name="_token"
-                                                        value="{{ csrf_token() }}">
-                                                    <a href="#">
-                                                        <i class="bx bxl-youtube text-danger"></i>
-                                                        <small class="text-dark fw-semibold ml-2">judul</small>
-                                                    </a>
-                                                    <button type="submit"
-                                                        class="btn btn-primary btn-sm float-sm-end">Pick</button>
-                                                </form>
-                                            </div>
+                                            <!-- Element will be inserted by ajax -->
                                         </div>
                                     </div>
                                 </div>
