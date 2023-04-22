@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Http;
 
 class MusicController extends Controller
 {
-    public function search(Request $request)
+    public function searchh(Request $request)
     {
         $api_key = config('services.youtube.api_key');
 
@@ -43,6 +43,21 @@ class MusicController extends Controller
             $video['channel_name'] = $item['snippet']['channelTitle'];
             array_push($videos, $video);
         }
+
+        return ApiResponse::format($videos, 200, ['success' => true]);
+    }
+
+    public function search(){
+        $videos = [];
+        $videos[0]['id']= "abc";
+        $videos[0]['title']="Joji die for yo    ";
+        $videos[0]['thumbnail']= "https://i.ytimg.com/vi/kIEWJ1ljEro/default.jpg";
+        $videos[0]['channel_name']= "Joji";
+
+        $videos[1]['id']= "helloHello";
+        $videos[1]['title']="Joji die for yo    ";
+        $videos[1]['thumbnail']= "https://i.ytimg.com/vi/kIEWJ1ljEro/default.jpg";
+        $videos[1]['channel_name']= "LatinHype";
 
         return ApiResponse::format($videos, 200, ['success' => true]);
     }
@@ -78,7 +93,7 @@ class MusicController extends Controller
     {
         $music = BookMusic::findOrFail($id);
 
-        return ApiResponse::format([$music], 200, ['success' => true]);
+        return ApiResponse::format($music->toArray(), 200, ['success' => true]);
     }
 
     public function getMusicList($bookId, GetListRequest $request){
