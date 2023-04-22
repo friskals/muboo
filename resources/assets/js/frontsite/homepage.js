@@ -92,7 +92,7 @@ $('#recommendedSong').on('show.bs.modal', function (event) {
             musics = data.data
             appendedMusic = '';
             for (i = 0; i < musics.length; i++) {
-                appendedMusic += '<a href="https://www.youtube.com/watch?v=' + musics[i].external_music_id + '" style="color: #000000;text-decoration: none;"><i class="bx bxl-youtube"></i></a><small class="text-dark fw-semibold ml-1">' + musics[i].title + '</small>'
+                appendedMusic += '<div class="row mb-1"><a href="https://www.youtube.com/watch?v=' + musics[i].external_music_id + '"><i class="bx bxl-youtube text-danger"></i><small class="text-dark fw-semibold ml-2" id="searchMusicTitle">' + musics[i].title + '</small></a></div>'
             }
             modal.find('.music').html(" ");
             modal.find('.music').append(appendedMusic)
@@ -104,14 +104,51 @@ $('#recommendedSong').on('show.bs.modal', function (event) {
 
 })
 
-/**
- * Clear element at shown music modal
- */
-$('#showMusic').on('shown.bs.modal', function () {
+
+$('#addMusic').submit(function (e) {
+    e.preventDefault();
     var modal = $(this)
-    modal.find("#searchedSong").html(" ");
-    $("#musicTitle").val("")
-});
+    musicTitle = modal.find('#chosenMusic').val()
+    token = modal.find('#token').val()
+    musicBookdId = modal.find('#musicBookdId').val()
+
+    $.ajax({
+        url: '/book/music/',
+        type: 'POST',
+        beforeSend: function (jqXHR, settings) {
+            jqXHR.setRequestHeader('X-CSRF-Token', token);
+        },
+        data: {
+            'book_id': musicBookdId,
+            'external_music_id': 'abc',
+            'title': musicTitle
+        },
+        success: function (response) {
+            if (!response.data.displayed) {
+                alert('music already added previously')
+                return;
+            }
+            $.ajax({
+                url: '/book/music/' + response.data.music_id,
+                type: 'GET',
+                success: function (response) {
+                    music = response.data
+                    newRecommendation = '<div class="row mb-1"><a href="https://www.youtube.com/watch?v=' + music.external_music_id + '"><i class="bx bxl-youtube text-danger"></i><small class="text-dark fw-semibold ml-2" id="searchMusicTitle">' + music.title + '</small></a></div>'
+                    $('.music').append(newRecommendation)
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+
+            })
+        },
+        error: function (e) {
+            console.log(e);
+        }
+
+    })
+})
+
 
 $('#searchSong').submit(function (e) {
     e.preventDefault();
@@ -127,7 +164,7 @@ $('#searchSong').submit(function (e) {
             musicSearched = '<div class="col mb-4 mt-4"> <small class="text-dark fw-semibold">Result</small></div><div class="div-row" >'
 
             for (i = 0; i < musics.length; i++) {
-                musicSearched += '<div class="row mb-1"><form id="pickMusic" class="mb-3"><input type="hidden" id="token" name="_token" value="{{ csrf_token() }}"> <a href="https://www.youtube.com/watch?v=' + musics[i].id + '""><i class="bx bxl-youtube text-danger"></i> <small class="text-dark fw-semibold ml-2">' + musics[i].title + '</small></a><button type="submit" class="btn btn-primary btn-sm float-sm-end">Pick</button> </form></div>'
+                musicSearched += '<div class="row mb-1"><form id="pickMusic" class="mb-3">  <input type="hidden" id="musicId" name="musicId" value="' + musics[i].id + '"/> <a href="https://www.youtube.com/watch?v=' + musics[i].id + '"><i class="bx bxl-youtube text-danger"></i> <small class="text-dark fw-semibold ml-2" id="searchMusicTitle">' + musics[i].title + '</small></a><button  onclick="pickMusic()" class="btn btn-primary btn-sm float-sm-end">Pick</button> </form></div>'
             }
 
             musicSearched += '</div>'
@@ -143,3 +180,19 @@ $('#searchSong').submit(function (e) {
 
     })
 })
+
+$('#pickMusic').submit(function (e) {
+    //stiill don't work
+    console.log("yoo  ooo ooo");
+    e.preventDefault();
+
+})
+
+/**
+ * Clear element at shown music modal
+ */
+ $('#showMusic').on('shown.bs.modal', function () {
+    var modal = $(this)
+    modal.find("#searchedSong").html(" ");
+    $("#musicTitle").val("")
+});

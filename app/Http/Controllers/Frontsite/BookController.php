@@ -14,7 +14,7 @@ class BookController extends Controller
 
     public function index()
     {
-        $books = Book::published()->paginate(self::NUMBER_OF_ITEM_PER_PAGE);
+        $books = Book::published()->latest()->paginate(self::NUMBER_OF_ITEM_PER_PAGE);
 
         $authors = Author::select(['name', 'id'])->latest()->limit(self::NUMBER_OF_ITEM_PER_PAGE)->get();
 

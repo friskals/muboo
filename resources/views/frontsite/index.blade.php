@@ -86,8 +86,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <form id="addMusic">
-                                        <input type="hidden" id="bookdId" name="book_id" value="{{ $book->id }}">
-                                        <input type="hidden" id="contentType" name="type" value="REVIEW">
+                                        <input type="hidden" id="musicBookdId" name="book_id" value="{{ $book->id }}">
                                         <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
                                         <input type="text" placeholder="add your fav!"
                                             style="outline: none; border:none;" id="chosenMusic" name="song"
