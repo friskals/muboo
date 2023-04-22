@@ -16,8 +16,9 @@ class ContentController extends Controller
     public function store(StoreRequest $request)
     {
         $request = $request->validated();
+
         $request['user_id'] = Auth::user()->id;
-        Log::info("request content " . json_encode($request));
+
         $content = Content::create($request);
 
         return response()->json([
@@ -29,7 +30,6 @@ class ContentController extends Controller
     public function update(UpdateRequest $request)
     {
         $request = $request->validated();
-        $user =  Auth::user();
 
         $content = Content::where([
             'id' => $request['content_id'],

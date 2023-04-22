@@ -20,17 +20,22 @@
             <div class="col-sm-3"></div>
             <div class="col-md-6 col-lg-4 mb-3">
                 <div class="card h-100">
-                    <img class="card-img-top" src="{{ asset('assets/img/elements/2.jpg') }}" alt="Card image cap" />
+                    <img class="card-img-top" src="storage/{{$book->image}}" alt="image" />
                     <div class="card-body">
                         <h5 class="card-title">{{ $book->title }}</h5>
-                        <a href="" class="card-text" data-toggle="modal" data-target="#bookReviews"
+                        <div class="div row">
+                            <a href="" class="card-text" data-toggle="modal" data-target="#bookReviews"
                             data-book-id="{{ $book->id }}" style="color: #000000;text-decoration: none;">
                             {{ $book->excerpts }}
                         </a>
-                        <a href="" class="card-text" data-toggle="modal" data-target="#recommendedSong"
+                        </div>
+                        <div class="div row">
+
+                        <a href="" class="card-text text-end" data-toggle="modal" data-target="#recommendedSong"
                             data-book-id="{{ $book->id }}">
-                            Song
+                            Fit Song
                         </a>
+                        </div>
                     </div>
 
                     <!--Start Book Review -->
