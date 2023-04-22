@@ -101,7 +101,7 @@ class MusicTest extends TestCase
             ->getContent();
 
         $listMusicRequest = [
-            'pagination' => 5
+            'limit' => 5
         ];
 
         $reponse = $this->post('/book/'.$book->id.'/music', $listMusicRequest)
