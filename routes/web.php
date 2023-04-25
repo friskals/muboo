@@ -34,16 +34,16 @@ Route::get('/pages/account-settings-connections', $controller_path . '\pages\Acc
 Route::get('/pages/misc-error', $controller_path . '\pages\MiscError@index')->name('pages-misc-error');
 Route::get('/pages/misc-under-maintenance', $controller_path . '\pages\MiscUnderMaintenance@index')->name('pages-misc-under-maintenance');
 
-// authentication
-Route::get('/auth/login-basic', $controller_path . '\authentications\LoginBasic@index')->name('auth-login-basic');
-Route::get('/auth/register-basic', $controller_path . '\authentications\RegisterBasic@index')->name('auth-register-basic');
-Route::get('/auth/forgot-password-basic', $controller_path . '\authentications\ForgotPasswordBasic@index')->name('auth-reset-password-basic');
+Route::prefix('user')->group(function () {
+    Route::get('/register', [RegisterController::class, 'registerPage'])->name('register-page');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register');
+    Route::get('/logout', [LogoutController::class, 'perform'])->name('logout');
+    Route::post('/login', [LoginController::class, 'login'])->name('login');
+    Route::get('/login', [LoginController::class, 'loginPage'])->name('user-login');
+});
 
-
-Route::post('/register', [RegisterController::class, 'register'])->name('register');
-Route::post('/logout', [LogoutController::class, 'perform'])->name('logout');
-Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/unauthorized', [GeneralPageController::class, 'returnPage401'])->name('unauthorized');
+
 Route::get('music/search', [MusicController::class, 'search'])->name('music.search');
 Route::post('content', [ContentController::class, 'store'])->name('content.add');
 Route::put('content', [ContentController::class, 'update'])->name('content.update');
@@ -53,4 +53,3 @@ Route::post('book/music/', [MusicController::class, 'addMusic']);
 Route::get('book/music/{id}', [MusicController::class, 'show']);
 Route::get('book/{id}', [BookController::class, 'show']);
 Route::post('book/{id}/music', [MusicController::class, 'getMusicList']);
-

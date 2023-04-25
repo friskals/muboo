@@ -19,6 +19,10 @@ class RegisterController extends Controller
 
         auth()->login($user);
 
-        return redirect()->route('dashboard-analytics');
+        return redirect()->route('home');
+    }
+
+    public function registerPage(){
+        return view('content.authentications.auth-register-basic');
     }
 }

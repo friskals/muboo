@@ -13,6 +13,6 @@ class LogoutController extends Controller
         
         Auth::logout();
 
-        return redirect(route('auth-login-basic'));
+        return redirect(route('user-login'));
     }
 }

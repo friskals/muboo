@@ -25,7 +25,7 @@
           <h4 class="mb-2">Welcome to {{config('variables.templateName')}}! 👋</h4>
           <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
-          <form id="formAuthentication" class="mb-3" action="/login" method="POST">
+          <form id="formAuthentication" class="mb-3" action="{{route('login')}}" method="POST">
             @csrf
             <div class="mb-3">
               <label for="email" class="form-label">Email or Username</label>
@@ -66,7 +66,7 @@
 
           <p class="text-center">
             <span>New on our platform?</span>
-            <a href="{{url('auth/register-basic')}}">
+            <a href="{{route('register-page')}}">
               <span>Create an account</span>
             </a>
           </p>

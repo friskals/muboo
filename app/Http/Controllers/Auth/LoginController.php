@@ -10,17 +10,23 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    public function login(LoginRequest $request){
+    public function login(LoginRequest $request)
+    {
         $credentials = $request->getCredentials();
-      
-        if(!Auth::validate($credentials)){
-                return redirect()->back()->withErrors(trans('auth.failed'));
-        } 
+
+        if (!Auth::validate($credentials)) {
+            return redirect()->back()->withErrors(trans('auth.failed'));
+        }
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
 
         Auth::login($user);
 
-        return redirect()->route('dashboard-analytics');
+        return redirect()->route($user->isAdmin() ? 'dashboard-analytics' : 'home');
+    }
+
+    public function loginPage()
+    {
+        return view('content.authentications.auth-login-basic');
     }
 }
